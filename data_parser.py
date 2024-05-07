@@ -33,7 +33,7 @@ def download_data(ticker, path = "./download_files"):
 # download_data("AAPL", "./download_files")
 
 
-def return_dataparsed(path):
+def return_dataparsed(path, option):
     """
     Function that returns human readable data by parsing through the human readbale HTML provided by the downloader
     Args:
@@ -46,8 +46,31 @@ def return_dataparsed(path):
     file.close()
     parsed_data = BeautifulSoup(data, features="html.parser")
     
-    ret_data = ' '.join(parsed_data.get_text().split())
-    return re.sub(r'[^\x00-\x7F]+', '', ret_data)
+    # ret_data = ' '.join(parsed_data.get_text().split())
+    if option == "slow":
+        ret_data = parsed_data.get_text()
+        ret_data = re.sub(r'[^\x00-\x7F]+', '', ret_data)
+        ret_data = " ".join(ret_data.split())
+        idx_pt1 = ret_data.index("ITEM 1. BUSINESS")
+        ret_data = ret_data[idx_pt1 :]
+        idx_pt1 = ret_data.index("ITEM 1. BUSINESS")
+        idx_pt2 = ret_data.index("PART II")
+        idx_pt3 = ret_data.index("PART III")
+        part2_data = ret_data[idx_pt2 : idx_pt3]
+        return part2_data
+    else:
+        ret_data = parsed_data.get_text()
+        ret_data = re.sub(r'[^\x00-\x7F]+', '', ret_data)
+        ret_data = " ".join(ret_data.split())
+        idx_pt1 = ret_data.index("ITEM 1. BUSINESS")
+        ret_data = ret_data[idx_pt1 :]
+        idx_pt1 = ret_data.index("ITEM 1. BUSINESS")
+        idx_pt2 = ret_data.index("Financial statements and Supplementary Data".upper())
+
+        idx_pt3 = ret_data.index("PART III")
+        part2_data = ret_data[idx_pt2 : idx_pt3]
+        return part2_data
+
 
 ##Example usage
 # print(return_dataparsed("full-submission.txt"))
@@ -81,34 +104,61 @@ def to_markdown(text):
     text = text.replace('•', '  *')
     return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
 
-def llm_prompt(file_paths, ticker):
+def send_parts(model, part):
+    k = 10000
+    split = part.split()
+    summary = ""
+    for i in range(len(split)//k):
+        s = " ".join(split[i * k : (i+1)*k])
+        try:
+            r = model.generate_content("Summarize the following in a few paragraphs:\n" + s)
+            summary += r.text
+        except:
+            continue
+    return summary
+
+def llm_prompt(file_paths, ticker, option):
     """
     Given an input, this function passes the input to the llm and generates a response. We use gemini-pro for the response.
     text: the input to be sent to the LLM
     """
 
-    GOOGLE_API_KEY = 'AIzaSyAIgAYQMG6oovlHJD3F-1RsLFEJJBTYI30'
+    GOOGLE_API_KEY = 'AIzaSyA8Gt8GITRmfHdp_HGswt5Z4amWbDob_Ko'
     genai.configure(api_key=GOOGLE_API_KEY)
-    # for m in genai.list_models():
-    #   if 'generateContent' in m.supported_generation_methods:
-    #     print(m.name)
 
+    y = 0
     model = genai.GenerativeModel('gemini-pro')
-    chat = model.start_chat(history=[])
-    text1 = f"The following are 10-K filing summaries of each year of {ticker}. Summarize the growth of the company and some insights:"
-    text = f"The following is data from {ticker} 10-k filings, summarize them in a few paragraphs and provide some interesting insights about the company :"
-    # for file_path in file_paths:
-    #     response = model.generate_content(text + return_dataparsed(file_path))
-    #     text1 += "\n" + response.text
-    inp_txt = text + return_dataparsed(file_paths[0])
-    response = model.generate_content(inp_txt)
-    text1 += "\n" + response.text
-    print("llm response generating.....")
-    response = model.generate_content(text1)
+    text1 = f"The following are 10-K filing summaries of each year of {ticker}. Summarize the growth of the company and provide some insights:\n"
+    final_text = ""
+    for file_path in file_paths:
+        try:
+            part1 = return_dataparsed(file_path, option)
+        except:
+            pass
+        response = send_parts(model, part1)
+        while True:
+            try:
+                response = model.generate_content(f"Summarize these summaries of the 10-k filings of {ticker} in a few paragraphs:\n" + response).text
+                break
+            except:
+                pass
+        y += 1
+        print(y)
+        final_text += response
     
-    return response
+    # inp_txt = return_dataparsed(file_paths[0])
+    # response = chat.send_message(inp_txt)
+    final_text = text1 + final_text
+    print("llm response generating.....")
+    while True:
+        try:
+            response = model.generate_content(text1)
+            break
+        except:
+            pass
+    return response, y
 
-def generate_insights(ticker):
+def generate_insights(ticker, option = 'fast'):
     """
     given a ticker for a company, generate a response from the information extracted from the filings
     """
@@ -127,8 +177,6 @@ def generate_insights(ticker):
     print(f"{len(file_paths)} year(s) of data being processed.....")
 
     ## llm functionality
-    response = llm_prompt(file_paths, ticker)
-    
-    os.rmdir(path)
+    response, y = llm_prompt(file_paths, ticker, option)
 
-    return response
+    return response, y
