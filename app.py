@@ -9,7 +9,7 @@ def index():
     if request.method == 'POST':
         user_input = request.form['user_input']
         processing_option = request.form['processing_option']
-        llm_response = generate_insights(user_input.upper(), processing_option.lower()).text
+        llm_response = generate_insights(user_input.strip().upper(), processing_option.lower()).text
         if llm_response:
             return render_template('index.html', user_input=user_input, llm_output = markdown2.markdown(llm_response.replace('•', '  *')))
         else:

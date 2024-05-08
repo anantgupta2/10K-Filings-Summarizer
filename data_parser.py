@@ -119,11 +119,12 @@ def send_parts(model, part):
     summary = ""
     for i in range(len(split)//k):
         s = " ".join(split[i * k : (i+1)*k])
-        try:
-            r = model.generate_content("Summarize the following in a few paragraphs:\n" + s)
-            summary += r.text
-        except:
-            continue
+        for i in range(10):
+            try:
+                r = model.generate_content("Summarize the following in a few paragraphs:\n" + s)
+                summary += r.text
+            except:
+                continue
     return summary
 
 def llm_prompt(file_paths, ticker, option):
@@ -142,7 +143,7 @@ def llm_prompt(file_paths, ticker, option):
 
     y = 0
     model = genai.GenerativeModel('gemini-pro')
-    text1 = f"The following are 10-K filing summaries of each year of {ticker}. Summarize the growth of the company and provide some insights:\n"
+    text1 = f"The following are 10-K filing summaries of each year of {ticker}. Summarize the growth of the company in a few paragraphs and provide some insights:\n"
     final_text = ""
     for file_path in file_paths:
         try:
@@ -153,7 +154,7 @@ def llm_prompt(file_paths, ticker, option):
         
         while True:
             try:
-                response = model.generate_content(f"Summarize these summaries of the 10-k filings of {ticker} in a few paragraphs:\n" + response).text
+                response = model.generate_content(f"Summarize these summaries of the 10-k filings of {ticker} in 5 paragraphs:\n" + response).text
                 break
             except:
                 pass
