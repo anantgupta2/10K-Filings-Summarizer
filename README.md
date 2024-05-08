@@ -6,6 +6,8 @@ User needs to install following dependencies to run the program locally (we use 
 
 pip install -U sec-edgar-downloader
 pip install -q -U google-generativeai
+pip install flask
+pip install markdown2
 
 The first install is for the sec edgar data API
 The second install is for the inference prompt for the LLM

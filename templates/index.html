@@ -4,19 +4,20 @@
     <title>Flask Input</title>
 </head>
 <body>
-    <h1>Input Example</h1>
+    <h1>Fintech Lab Programming Assignment</h1>
     <form method="post">
         <label for="user_input">Enter your text:</label><br>
         <input type="text" id="user_input" name="user_input"><br><br>
+        <label for="processing_option">Select processing option:</label>
+        <select id="processing_option" name="processing_option">
+            <option value="fast">Fast</option>
+            <option value="slow">Slow</option>
+        </select><br><br>
         <input type="submit" value="Submit">
     </form>
-    {% if user_input %}
-    <h2>You entered:</h2>
-    <p>{{ user_input }}</p>
-    {% endif %}
-    {% if llm_response %}
-    <h2>LLM Response:</h2>
-    <p>{{ llm_response }}</p>
+    {% if llm_output %}
+    <h2>Output:</h2>
+    {{ llm_output | safe}}
     {% endif %}
 </body>
 </html>

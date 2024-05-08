@@ -50,24 +50,24 @@ def return_dataparsed(path, option):
     if option == "slow":
         ret_data = parsed_data.get_text()
         ret_data = re.sub(r'[^\x00-\x7F]+', '', ret_data)
-        ret_data = " ".join(ret_data.split())
-        idx_pt1 = ret_data.index("ITEM 1. BUSINESS")
+        ret_data = " ".join(ret_data.split()).lower()
+        idx_pt1 = ret_data.index("ITEM 1. BUSINESS".lower())
         ret_data = ret_data[idx_pt1 :]
-        idx_pt1 = ret_data.index("ITEM 1. BUSINESS")
-        idx_pt2 = ret_data.index("PART II")
-        idx_pt3 = ret_data.index("PART III")
+        idx_pt1 = ret_data.index("ITEM 1. BUSINESS".lower())
+        idx_pt2 = ret_data.index("PART II".lower())
+        idx_pt3 = ret_data.index("PART III".lower())
         part2_data = ret_data[idx_pt2 : idx_pt3]
         return part2_data
     else:
         ret_data = parsed_data.get_text()
         ret_data = re.sub(r'[^\x00-\x7F]+', '', ret_data)
-        ret_data = " ".join(ret_data.split())
-        idx_pt1 = ret_data.index("ITEM 1. BUSINESS")
+        ret_data = " ".join(ret_data.split()).lower()
+        idx_pt1 = ret_data.index("ITEM 1. BUSINESS".lower())
         ret_data = ret_data[idx_pt1 :]
-        idx_pt1 = ret_data.index("ITEM 1. BUSINESS")
-        idx_pt2 = ret_data.index("Financial statements and Supplementary Data".upper())
+        idx_pt1 = ret_data.index("ITEM 1. BUSINESS".lower())
+        idx_pt2 = ret_data.index("Financial statements and Supplementary Data".lower())
 
-        idx_pt3 = ret_data.index("PART III")
+        idx_pt3 = ret_data.index("PART III".lower())
         part2_data = ret_data[idx_pt2 : idx_pt3]
         return part2_data
 
@@ -133,9 +133,10 @@ def llm_prompt(file_paths, ticker, option):
     for file_path in file_paths:
         try:
             part1 = return_dataparsed(file_path, option)
+            response = send_parts(model, part1)
         except:
             pass
-        response = send_parts(model, part1)
+        
         while True:
             try:
                 response = model.generate_content(f"Summarize these summaries of the 10-k filings of {ticker} in a few paragraphs:\n" + response).text
@@ -156,7 +157,7 @@ def llm_prompt(file_paths, ticker, option):
             break
         except:
             pass
-    return response, y
+    return response
 
 def generate_insights(ticker, option = 'fast'):
     """
@@ -177,6 +178,6 @@ def generate_insights(ticker, option = 'fast'):
     print(f"{len(file_paths)} year(s) of data being processed.....")
 
     ## llm functionality
-    response, y = llm_prompt(file_paths, ticker, option)
+    response = llm_prompt(file_paths, ticker, option)
 
-    return response, y
+    return response

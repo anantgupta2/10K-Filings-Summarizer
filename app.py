@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from data_parser import *
+import markdown2
 
 app = Flask(__name__)
 
@@ -8,9 +9,9 @@ def index():
     if request.method == 'POST':
         user_input = request.form['user_input']
         processing_option = request.form['processing_option']
-        llm_response = generate_insights(user_input.upper(), processing_option.lower())[0].text
+        llm_response = generate_insights(user_input.upper(), processing_option.lower()).text
         if llm_response:
-            return render_template('index.html', user_input=user_input, llm_response = llm_response)
+            return render_template('index.html', user_input=user_input, llm_output = markdown2.markdown(llm_response.replace('•', '  *')))
         else:
             return render_template('index.html', user_input=user_input)
     else:
