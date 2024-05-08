@@ -30,7 +30,7 @@ I used python because I am proficient in the language and it is very simple to m
 ### Outputs
 A few outputs have been stored in Tesla_output.txt and Doordash_output.txt
 
-### Link to the recording : 
+### Link to the recording : https://youtu.be/r6ZsNU_yoW0
 
 P.S. : I used the late days because I had a 24 hr journey back home and I had to move out of my apartment. Sorry for the delay!! I hope I can be accepted into the lab.
 
