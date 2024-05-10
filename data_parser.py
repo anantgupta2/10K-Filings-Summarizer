@@ -11,7 +11,7 @@ from IPython.display import Markdown
 
 # path = "./download_files/sec-edgar-filings/"
 ## Input Google API Key
-GOOGLE_API_KEY = 'AIzaSyA8Gt8GITRmfHdp_HGswt5Z4amWbDob_Ko'
+GOOGLE_API_KEY = 'YOUR GOOGLE API KEY'
 
 def download_data(ticker, path = "./download_files"):
     """

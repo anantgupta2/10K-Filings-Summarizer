@@ -38,3 +38,5 @@ I realized that there was a HUGE mistake in my data parsing and I had to end up 
 
 I recommend using financial as the other ones are slower (but if the LLM responds fast, other might also be good).
 
+### Google API Key
+Please download your own google API key from https://aistudio.google.com/app/apikey.
