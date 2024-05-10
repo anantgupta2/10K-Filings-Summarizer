@@ -188,7 +188,7 @@ def llm_prompt(file_paths, ticker, option):
     # inp_txt = return_dataparsed(file_paths[0])
     # response = chat.send_message(inp_txt) 
     if option == "general":
-        text1 = f"Summarize the following in a page\n:"
+        text1 = f"Summarize the following in a page and analyse the advancement of the company:\n"
     else:
         text1 = f"The following are 10-K filing summaries of each year of {ticker}. Give the growth of the company, the summary and some interesting facts about the company in a few paragraphs for each:\n"
 
