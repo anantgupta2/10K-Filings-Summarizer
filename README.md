@@ -1,6 +1,5 @@
-# FinTech_Lab_summerTask
-Programming Task for Fintech Lab. 
-Find the old submission in the old_submission branch of the same repository. The updates are in the section "Updates for May 10".
+## Goal
+Use API calls to summarize 10K filings data made available by the US government.
 
 ### Downloads
 User needs to install following dependencies to run the program locally (we use python):
@@ -28,17 +27,12 @@ app.py contains the app functionality that displays the generated output from th
 
 
 ### Tech Stack
-I used python because I am proficient in the language and it is very simple to make API calls usin python. I used Flask for the app because that was the simplest app coding I could find (I am not very familiar with making apps/websites).
+I used python because I am proficient in the language and it is very simple to make API calls usin python. I used Flask for the app because that was the simplest app coding I could find (I am not very familiar with making apps/websites). User may change the structure and deploy their own app using the functions provided.
 
 ### Outputs
 A few outputs have been stored in Tesla_output.txt and Doordash_output.txt
 
 ### Link to the recording : https://youtu.be/r6ZsNU_yoW0
-
-## Updates for May 10
-I realized that there was a HUGE mistake in my data parsing and I had to end up changing a lot of the code. The core intuition is still the same but the "general" and  "both" options replace the formerly "slow" option whereas the "financial" option replaces the old "fast" option. The processing is very slow (as should be expected). My previous submission was basically doing nothing but operating on data it already had (which I just counted as the LLM being stupid but it was me who was beng stupid). If nothing, I at east learned that the LLMs are not as bad at data processing as I thought they would be.
-
-I recommend using financial as the other ones are slower (but if the LLM responds fast, other might also be good).
 
 ### Google API Key
 Please download your own google API key from https://aistudio.google.com/app/apikey.
