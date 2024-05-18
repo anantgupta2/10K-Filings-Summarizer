@@ -5,10 +5,12 @@ Find the old submission in the old_submission branch of the same repository. The
 ### Downloads
 User needs to install following dependencies to run the program locally (we use python):
 
+```
 pip install -U sec-edgar-downloader
 pip install -q -U google-generativeai
 pip install flask
 pip install markdown2
+```
 
 The first install is for the sec edgar data API
 The second install is for the inference prompt for the LLM
