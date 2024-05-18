@@ -30,7 +30,7 @@ app.py contains the app functionality that displays the generated output from th
 I used python because I am proficient in the language and it is very simple to make API calls usin python. I used Flask for the app because that was the simplest app coding I could find (I am not very familiar with making apps/websites). User may change the structure and deploy their own app using the functions provided.
 
 ### Outputs
-A few outputs have been stored in Tesla_output.txt and Doordash_output.txt
+A few outputs have been stored in the text files for DBX and DASH.
 
 ### Link to the recording : https://youtu.be/r6ZsNU_yoW0
 
