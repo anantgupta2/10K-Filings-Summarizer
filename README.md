@@ -27,12 +27,10 @@ app.py contains the app functionality that displays the generated output from th
 
 
 ### Tech Stack
-I used python because I am proficient in the language and it is very simple to make API calls usin python. I used Flask for the app because that was the simplest app coding I could find (I am not very familiar with making apps/websites). User may change the structure and deploy their own app using the functions provided.
+I used python because I am proficient in the language and it is very simple to make API calls usin python. I used Flask for the app because that was the simplest app coding I could find (I am not very familiar with making apps/websites). User may change the structure and deploy their own app using the functions provided. Additional functionality can be added by simply adding a more options in the downloading of the filings.
 
 ### Outputs
 A few outputs have been stored in the text files for DBX and DASH.
-
-### Link to the recording : https://youtu.be/r6ZsNU_yoW0
 
 ### Google API Key
 Please download your own google API key from https://aistudio.google.com/app/apikey.
